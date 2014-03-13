@@ -376,9 +376,9 @@ ovutils::eDest MDPComp::getMdpPipe(hwc_context_t *ctx, ePipeType type) {
 
 bool MDPComp::isFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list)
 {
+    int numAppLayers = ctx->listStats[mDpy].numAppLayers;
     bool ret = true;
     bool isSecureYUVLayer = false;
-    const int numAppLayers = ctx->listStats[mDpy].numAppLayers;
 
     if(!isEnabled()) {
         ALOGD_IF(isDebug(),"%s: MDP Comp. not enabled.", __FUNCTION__);
@@ -389,7 +389,7 @@ bool MDPComp::isFrameDoable(hwc_context_t *ctx, hwc_display_contents_1_t* list)
         return false;
     }
 
-    for(int i = 0; i < numAppLayers; ++i) {
+    for(unsigned int i = 0; i < numAppLayers; ++i) {
         hwc_layer_1_t* layer = &list->hwLayers[i];
         private_handle_t *hnd = (private_handle_t *)layer->handle;
         if(isYuvBuffer(hnd) && isSecureBuffer(hnd)){
